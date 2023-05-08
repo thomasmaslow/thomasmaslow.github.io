@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Verifying Database Backups with MD5 Checksums | DIY Blog</title>
+<meta name="generator" content="Jekyll v4.3.2" />
+<meta property="og:title" content="Verifying Database Backups with MD5 Checksums" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="My Experience Using MD5 Checksum Tool for Verifying Database Backups." />
+<meta property="og:description" content="My Experience Using MD5 Checksum Tool for Verifying Database Backups." />
+<link rel="canonical" href="https://thomasmaslow.github.io/blog/verifying-database-backups-with-md5-checksums" />
+<meta property="og:url" content="https://thomasmaslow.github.io/blog/verifying-database-backups-with-md5-checksums" />
+<meta property="og:site_name" content="DIY Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-03-23T14:03:34+01:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Verifying Database Backups with MD5 Checksums" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-03-23T14:03:34+01:00","datePublished":"2023-03-23T14:03:34+01:00","description":"My Experience Using MD5 Checksum Tool for Verifying Database Backups.","headline":"Verifying Database Backups with MD5 Checksums","mainEntityOfPage":{"@type":"WebPage","@id":"https://thomasmaslow.github.io/blog/verifying-database-backups-with-md5-checksums"},"url":"https://thomasmaslow.github.io/blog/verifying-database-backups-with-md5-checksums"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://thomasmaslow.github.io/feed.xml" title="DIY Blog" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">DIY Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About Me</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Verifying Database Backups with MD5 Checksums</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2023-03-23T14:03:34+01:00" itemprop="datePublished">Mar 23, 2023
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>As someone who has worked with databases, I know how important it is to have reliable backups of your data. However, it’s not enough to simply create backups – you need to verify that they are not corrupted and can be restored in case of a disaster. This is where the MD5 checksum checker tool comes in handy.</p>
+
+<p>The MD5 checksum is a unique value calculated based on the contents of a file. If the file contents are modified, even by a single byte, the MD5 checksum changes. By comparing the MD5 checksums of the source and destination files, you can ensure that the files are identical and not corrupted during the transfer.</p>
+
+<p>While Linux has a built-in md5 command, Windows users need to download and install an MD5 <a href="https://www.fastsum.com/">checksum checker tool</a>, it is the one of the most handy options for Windows. Which offers both a command-line version and a GUI version. The command-line version is free to use, while the GUI version is a commercial product.</p>
+
+<p>To demonstrate how to use the MD5 checksum checker tool for database backups, I’ll walk you through an example scenario. Let’s say you have a database server running on a Windows machine, and you want to create a backup of the database and transfer it to another Windows machine over the network. Here are the steps you can follow:</p>
+
+<p>Create a database backup file using your preferred method (e.g., pg_dump for PostgreSQL databases).</p>
+
+<p>Calculate the MD5 checksum of the backup file using FastSum’s command-line tool. Open a command prompt and navigate to the directory where the backup file is located. Then, enter the following command:</p>
+
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell">fsum C:<span class="se">\D</span>ata<span class="se">\*</span>.zip /T:F /R</code></pre></figure>
+
+<p>This will calculate the MD5 checksum of the backup file and display it in the command prompt.</p>
+
+<p>Transfer the backup file to the destination machine using a file transfer protocol such as FTP or rsync.</p>
+
+<p>On the destination machine, calculate the MD5 checksum of the transferred backup file using FastSum’s command-line tool. Open a command prompt and navigate to the directory where the transferred file is located. Then, enter the following command:</p>
+
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell">fsum C:<span class="se">\D</span>ata /T:F /R /V</code></pre></figure>
+
+<p>This will calculate the MD5 checksum of the transferred file and display it in the command prompt.</p>
+
+<p>Compare the MD5 checksums of the source and destination files. If they match, it means the backup file was transferred without any corruption. If they don’t match, it means the file was corrupted during the transfer, and you should re-transfer the file.</p>
+
+<p>In addition to using the MD5 checksum checker tool, it’s a good practice to also verify the integrity of your database backups by restoring them to a test environment and checking if the data is intact. However, using the MD5 checksum checker tool is a quick and easy way to ensure that your backups are not corrupted during the transfer.</p>
+
+<p>In conclusion, using an MD5 checksum checker tool like FastSum can help you verify the integrity of your database backups when transferring them over the network. With just a few simple commands, you can calculate the MD5 checksum of your backup files and ensure that they are identical on both the source and destination machines. While Windows users need to download and install an MD5 checksum checker tool, FastSum’s command-line version is free to use and provides an easy way to check the integrity of your database backups.</p>
+
+  </div><a class="u-url" href="/blog/verifying-database-backups-with-md5-checksums" hidden></a>
+</article>
+
+
+<div class="tagcloud"><span class="tagcloud-h">Tags:</span> <span class="tagcloud-tag tagcloud-tag-xl"><a href="/tag/database">database</a></span>
+<span class="tagcloud-tag tagcloud-tag-s"><a href="/tag/fastsum">fastsum</a></span>
+<span class="tagcloud-tag tagcloud-tag-s"><a href="/tag/fsum">fsum</a></span>
+<span class="tagcloud-tag tagcloud-tag-s"><a href="/tag/integrity">integrity</a></span>
+<span class="tagcloud-tag tagcloud-tag-s"><a href="/tag/md5">md5</a></span>
+<span class="tagcloud-tag tagcloud-tag-s"><a href="/tag/pg-dump">pg-dump</a></span>
+<span class="tagcloud-tag tagcloud-tag-xl"><a href="/tag/postgres">postgres</a></span></div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">© 2023 Thomas Maslow</li><li><a class="u-email" href="mailto:blog@thomasmaslow.ru">blog@thomasmaslow.ru</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/thomasmaslow"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">thomasmaslow</span></a></li><li><a href="https://www.twitter.com/thomasmaslow"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">thomasmaslow</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>This is my personal website and blog.</p>
+        <p>Any and all opinions listed here are my own and not representative of my employers; future, past and present.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+</body>
+
+</html>
