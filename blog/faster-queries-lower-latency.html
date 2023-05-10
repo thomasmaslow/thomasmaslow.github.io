@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Faster Queries, Lower Latency | DIY Blog</title>
+<meta name="generator" content="Jekyll v4.3.2" />
+<meta property="og:title" content="Faster Queries, Lower Latency" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="How Properly Organized Fields Improve PostgreSQL Performance." />
+<meta property="og:description" content="How Properly Organized Fields Improve PostgreSQL Performance." />
+<link rel="canonical" href="https://thomasmaslow.github.io/blog/faster-queries-lower-latency" />
+<meta property="og:url" content="https://thomasmaslow.github.io/blog/faster-queries-lower-latency" />
+<meta property="og:site_name" content="DIY Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-03-23T14:03:34+01:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Faster Queries, Lower Latency" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-03-23T14:03:34+01:00","datePublished":"2023-03-23T14:03:34+01:00","description":"How Properly Organized Fields Improve PostgreSQL Performance.","headline":"Faster Queries, Lower Latency","mainEntityOfPage":{"@type":"WebPage","@id":"https://thomasmaslow.github.io/blog/faster-queries-lower-latency"},"url":"https://thomasmaslow.github.io/blog/faster-queries-lower-latency"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://thomasmaslow.github.io/feed.xml" title="DIY Blog" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">DIY Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About Me</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Faster Queries, Lower Latency</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2023-03-23T14:03:34+01:00" itemprop="datePublished">Mar 23, 2023
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>I have notice over the years that proper table design is critical to achieving high performance in a <a href="https://www.postgresql.org/">PostgreSQL</a> database. One of the most important aspects of table design is the proper arrangement of fields. In this article, I will explain how properly arranging fields in a database table can increase the performance of PostgreSQL and provide examples of how to implement this in SQL code.</p>
+
+<p>PostgreSQL is a powerful relational database management system that uses SQL as its primary language. It is known for its robustness, scalability, and flexibility. However, it requires proper configuration and optimization to achieve the best performance. One key aspect of optimization is the arrangement of fields in tables.</p>
+
+<p>When creating a table in PostgreSQL, it is essential to define the fields in a way that makes sense logically and optimizes performance. One best practice is to group fields that are frequently accessed together, such as those used in a single query or transaction. This allows PostgreSQL to read and write data more efficiently, reducing the number of disk I/O operations required.</p>
+
+<p>Another best practice is to use the appropriate data types for each field. Choosing the right data type can help to reduce the amount of disk space used by the table and increase the performance of the database. For example, using a boolean data type instead of a varchar(5) for a field that can only have two values (e.g., true or false) can reduce the size of the table and increase query performance.</p>
+
+<p>One example of how properly arranged fields can improve performance is in the case of a table with many columns, some of which are rarely accessed. In this scenario, it is advisable to move the rarely accessed columns to a separate table to reduce the amount of data that PostgreSQL needs to read and write during query execution. This approach is called vertical partitioning and can significantly improve performance in certain scenarios.</p>
+
+<p>Here’s an example of how to create a table with properly arranged fields in PostgreSQL:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">example_table</span> <span class="p">(</span> <span class="n">id</span> <span class="nb">SERIAL</span> <span class="k">PRIMARY</span> <span class="k">KEY</span><span class="p">,</span> <span class="n">name</span> <span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span> <span class="n">email</span> <span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span> <span class="n">date_of_birth</span> <span class="nb">DATE</span><span class="p">,</span> <span class="n">is_active</span> <span class="nb">BOOLEAN</span> <span class="k">DEFAULT</span> <span class="k">TRUE</span> <span class="p">);</span></code></pre></figure>
+
+<p>In this example, we have grouped the frequently accessed fields (id, name, email, and is_active) together and used the appropriate data types for each field. We have also added a default value for the is_active field, which can further optimize performance by reducing the amount of data that needs to be written to the table.</p>
+
+<p>Another example of how properly arranged fields can improve performance is by using partial indexes. Partial indexes are a feature in PostgreSQL that allow you to create indexes on a subset of rows in a table. By using a partial index, you can reduce the size of the index and improve query performance.</p>
+
+<p>Here’s an example of how to create a partial index in PostgreSQL:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">CREATE</span> <span class="k">INDEX</span> <span class="n">example_index</span> <span class="k">ON</span> <span class="n">example_table</span> <span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="k">WHERE</span> <span class="n">is_active</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span></code></pre></figure>
+
+<p>In this example, we have created a partial index on the name field where the is_active field is true. This will create a smaller index that only includes the rows where is_active is true, reducing the size of the index and improving query performance.</p>
+
+<p>If you’re going to perform some database schema changes after reading this, you may find useful my article about a tool for <a href="/blog/new-tool-for-postgres-database-schema-migrations">schema migrations</a>.</p>
+
+<p>One of the most important factors in organizing fields is to ensure that the most frequently accessed columns are located at the beginning of the row. When a query is executed, the database must read data from the storage device into memory. By placing the most frequently accessed fields at the beginning of the row, the database can read and return the data more quickly.</p>
+
+<p>For example, let’s consider a table that has 10 columns. The first five columns are accessed more frequently than the remaining five columns. If we arrange the columns so that the first five columns are at the beginning of the row, then the database can retrieve data more efficiently. Here’s an example SQL code to create such a table:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">my_table</span> <span class="p">(</span> <span class="n">column1</span> <span class="nb">INTEGER</span><span class="p">,</span> <span class="n">column2</span> <span class="nb">TEXT</span><span class="p">,</span> <span class="n">column3</span> <span class="nb">TIMESTAMP</span><span class="p">,</span> <span class="n">column4</span> <span class="nb">INTEGER</span><span class="p">,</span> <span class="n">column5</span> <span class="nb">TEXT</span><span class="p">,</span> <span class="n">column6</span> <span class="nb">TEXT</span><span class="p">,</span> <span class="n">column7</span> <span class="nb">INTEGER</span><span class="p">,</span> <span class="n">column8</span> <span class="nb">TEXT</span><span class="p">,</span> <span class="n">column9</span> <span class="nb">TEXT</span><span class="p">,</span> <span class="n">column10</span> <span class="nb">BOOLEAN</span> <span class="p">);</span></code></pre></figure>
+
+<p>Another important factor to consider when arranging fields is to group related columns together. This is especially important when working with larger tables that have many columns. Grouping related columns together can improve the readability of the table, making it easier to maintain and modify.</p>
+
+<p>For instance, let’s consider a table that stores information about customers, including their name, address, phone number, and email. It makes sense to group all the customer information columns together, as shown in the following example SQL code:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">customers</span> <span class="p">(</span> <span class="n">customer_id</span> <span class="nb">INTEGER</span><span class="p">,</span> <span class="n">first_name</span> <span class="nb">TEXT</span><span class="p">,</span> <span class="n">last_name</span> <span class="nb">TEXT</span><span class="p">,</span> <span class="n">street_address</span> <span class="nb">TEXT</span><span class="p">,</span> <span class="n">city</span> <span class="nb">TEXT</span><span class="p">,</span> <span class="k">state</span> <span class="nb">TEXT</span><span class="p">,</span> <span class="n">zip_code</span> <span class="nb">TEXT</span><span class="p">,</span> <span class="n">phone_number</span> <span class="nb">TEXT</span><span class="p">,</span> <span class="n">email</span> <span class="nb">TEXT</span> <span class="p">);</span></code></pre></figure>
+
+<p>In addition to organizing columns, it’s important to consider the data types of each column. PostgreSQL has many different data types, each with its own advantages and disadvantages. For example, using a VARCHAR data type instead of TEXT for a column with a limited length can save disk space and improve query performance. Similarly, using a DATE data type instead of TIMESTAMP when the time component is not required can also improve performance.</p>
+
+<p>Here’s an example SQL code to create a table with optimized data types:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">my_table</span> <span class="p">(</span> <span class="n">column1</span> <span class="nb">INTEGER</span><span class="p">,</span> <span class="n">column2</span> <span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">255</span><span class="p">),</span> <span class="n">column3</span> <span class="nb">DATE</span><span class="p">,</span> <span class="n">column4</span> <span class="nb">BOOLEAN</span> <span class="p">);</span></code></pre></figure>
+
+<p>It looks like the properly arranging fields in a database table is a critical aspect of PostgreSQL optimization. By grouping frequently accessed fields together, using the appropriate data types, and utilizing features like vertical partitioning and partial indexes, you can significantly improve the performance of your database. As a database administrator, it is important to understand these best practices and implement them in your PostgreSQL databases to achieve the best performance possible.</p>
+
+  </div><a class="u-url" href="/blog/faster-queries-lower-latency" hidden></a>
+</article>
+
+
+<div class="tagcloud"><span class="tagcloud-h">Tags:</span> <span class="tagcloud-tag tagcloud-tag-xl"><a href="/tag/database/">database</a></span>
+<span class="tagcloud-tag tagcloud-tag-s"><a href="/tag/performance/">performance</a></span>
+<span class="tagcloud-tag tagcloud-tag-xl"><a href="/tag/postgres/">postgres</a></span></div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">© 2023 Thomas Maslow</li><li><a class="u-email" href="mailto:blog@thomasmaslow.ru">blog@thomasmaslow.ru</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/thomasmaslow"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">thomasmaslow</span></a></li><li><a href="https://www.twitter.com/thomasmaslow"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">thomasmaslow</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>This is my personal website and blog.</p>
+        <p>Any and all opinions listed here are my own and not representative of my employers; future, past and present.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+</body>
+
+</html>
